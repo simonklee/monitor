@@ -1,0 +1,8 @@
+*.pyc
+*.pot
+*logs*
+*.sql
+ve
+pip-log*
+local_settings*
+trafodjango
