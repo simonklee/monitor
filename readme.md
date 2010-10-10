@@ -1,3 +1,3 @@
-# monitor.seido.org
+# mon.seido.org
 
 Backend-project for monitoring sensor data.
