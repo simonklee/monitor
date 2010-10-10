@@ -17,3 +17,7 @@ class Record(models.Model):
         get_latest_by = 'created'
         ordering = ('-created',)
 
+    @staticmethod
+    def data_fields():
+        return ('current', 'volt', 'temp', 'light')
+
