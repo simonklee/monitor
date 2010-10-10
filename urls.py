@@ -3,5 +3,5 @@ from django.contrib import admin, databrowse
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^monitor/', include('apps.mon.urls')),
+    (r'^m/', include('apps.mon.urls')),
 )

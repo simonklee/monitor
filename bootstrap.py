@@ -12,4 +12,5 @@ if os.path.exists(vedir):
 
 subprocess.call(["pip","install",
                  "-E",os.path.join(pwd,"ve"),
+                 "--enable-site-packages",
                  "--requirement",os.path.join(pwd,"req.txt")])

@@ -1,11 +1,6 @@
 import os
 import logging
 
-from jogging.handlers import DatabaseHandler
-from logging import StreamHandler
-
-GLOBAL_LOG_HANDLERS = [DatabaseHandler()]
-
 # server specific code
 PROJECT_PATH = os.path.split(os.path.realpath(__file__))[0]
 URL = 'http://monitor.sedio.org'
@@ -72,7 +67,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'johnny.middleware.CommittingTransactionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'jogging.middleware.LoggingMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
@@ -90,9 +84,6 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_extensions',
     'johnny',
-    'jogging',
-    'memcache_status',
     'south',
-    # trafo apps.
     'apps.mon',
 )
