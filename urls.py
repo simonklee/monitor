@@ -5,5 +5,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^m/', include('apps.mon.urls')),
-    url(r'^$', direct_to_template, {'template': 'mon/mon_api.html'}, name='index'),
+    url(r'^$', direct_to_template, {'template': 'mon/mon_api.html'}, name='api'),
+    url(r'^chart/$', direct_to_template, {'template': 'mon/mon_chart.html'}, name='chart'),
 )

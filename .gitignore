@@ -2,6 +2,7 @@
 *.pot
 *logs*
 *.sql
+pid.txt
 ve
 pip-log*
 local_settings*
