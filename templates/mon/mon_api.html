@@ -1,4 +1,4 @@
-{% extends "mon/mon_base.html" %}
+{% extends "base.html" %}
 
 {% block title %}API{% endblock %}
 {% block header %}API{% endblock %}
@@ -54,4 +54,8 @@ The data is returned as a JSON-formatted string object.</p>
     <dt></dt>
     <dd></dd>
 </dl>
+<h3>Visualization</h3>
+<p>Data can be visualized using the <a href="{% url chart %}">charts API</a>. Append the same 
+knowledge as used to retrieved JSON formatted strings. Instead of strings a graph is returned.</p>
+
 {% endblock %}

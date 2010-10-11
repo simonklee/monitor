@@ -3,6 +3,7 @@
 <head>
     <meta charset=utf-8>
     <title>{% block title %}{% endblock %} mon.sedio.org</title>
+    <link href="{{ MEDIA_URL }}favicon.ico" rel="icon" type="image/x-icon" />
     <link type="text/css" href="{{ MEDIA_URL }}css/style.css" rel="Stylesheet" />
     <link type="text/css" href="{{ MEDIA_URL }}css/grid.css" rel="Stylesheet" />
     <script type="text/javascript" src="http://www.google.com/jsapi?key={{ GOOGLE_API }}"></script>
@@ -15,9 +16,19 @@
 <body>
     <div class="container_16">
         <div class="grid_16" id="header">
-            <div class="grid_8 omega alpha"> 
-                <a href="http://{{ site }}" title="mon.sedio.org" id="logo"></a>
-            </div> 
+            <h1><a href="http://mon.sedio.org" title="mon.sedio.org" id="logo">mon.sedio.org</a></h1>
+       </div>
+        <div class="grid_16" id="titles">
+            <h1>{% block header %}{% endblock %}</h1>
+            <h2>{% block subheader %}{% endblock %}</h2>
+        </div>
+        <div class="grid_16" id="content">
+        {% block content %}
+        {% endblock %}
+        </div>
+        <div class="grid_16" id="footer">
+            <p class="contact"><strong>simonz05 A gmail.com</strong></p> 
+
             <div class="grid_8 alpha omega" id="loginform">
             {% if user.is_authenticated %}
             <p>{{ user.username }} <a href="#" title="Logut">Log out</a></p>
@@ -35,17 +46,7 @@
                 </form>
             {% endif %}
             </div>
-        </div>
-        <div class="grid_16" id="titles">
-            <h1>{% block header %}{% endblock %}</h1>
-            <h2>{% block subheader %}{% endblock %}</h2>
-        </div>
-        <div class="grid_16" id="content">
-        {% block content %}
-        {% endblock %}
-        </div>
-        <div class="grid_16" id="footer">
-            <p class="contact"><strong>simonz05 A gmail.com</strong></p> 
+ 
         </div>            
     </div>
     {% block extrabutt %}{% endblock %}

@@ -18,12 +18,20 @@ h1 {
     padding: 0 1em 0 0;
 }
 
+#header h1 a {
+    color: #4877A3;
+}
+
+#header h1 a:hover {
+    color: #1F5A91;
+}
+
 h2 {
     color: #9D9D9D;
 }
 
 h3 {
-    margin: 1em 1em 0.5em 0;
+    margin: 1em 0 0.5em 0;
     border-bottom: solid 5px #f1f1f1;
 }
 
@@ -31,7 +39,7 @@ h4 {
 }
 
 #titles {
-    padding: 0 0 0 1em;
+    padding: 1em;
     background: #f1f1f1;
     -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px;    
     overflow: hidden;
@@ -46,12 +54,6 @@ h4 {
 a {
     text-decoration: none;
     color: #fdcc07;
-    -webkit-transition: background-color 1s linear; -moz-transition: background-color 1s linear; -o-transition: background-color 1s linear;
-}
-
-a:hover, a:active {
-    color: #f1f1f1;
-    text-decoration: underline;
 }
 
 
@@ -168,7 +170,7 @@ div#header {
 
 div#content {
     background: #f8f8f8;
-    padding: 1em 0 0 1em;
+    padding: 1em;
     -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px;    
     overflow: hidden;
     font-size: 1.1em;
