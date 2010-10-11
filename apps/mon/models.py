@@ -19,5 +19,5 @@ class Record(models.Model):
 
     @staticmethod
     def data_fields():
-        return ('current', 'volt', 'temp', 'light')
+        return ['current', 'volt', 'temp', 'light', 'created']
 
