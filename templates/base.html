@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load tabs %}
     <meta charset=utf-8>
     <title>{% block title %}{% endblock %} mon.sedio.org</title>
     <link href="{{ MEDIA_URL }}favicon.ico" rel="icon" type="image/x-icon" />
@@ -17,6 +18,19 @@
     <div class="container_16">
         <div class="grid_16" id="header">
             <h1><a href="http://mon.sedio.org" title="mon.sedio.org" id="logo">mon.sedio.org</a></h1>
+            
+            {% block navigation %}
+            <div class="grid_16" id="tabs">
+                <ul id="nav"> 
+                    <li>
+                        <a href="{% url api %}" title="api" class="{% iftab "nav" "api" %}active{% else %}inactive{% endiftab %}">api</a>
+                    </li>
+                    <li>
+                        <a href="{% url chart %}" title="chart" class="{% iftab "nav" "chart" %}active{% else %}inactive{% endiftab %}">charts</a>
+                    </li>
+                </ul> 
+            </div>
+            {% endblock %}
        </div>
         <div class="grid_16" id="titles">
             <h1>{% block header %}{% endblock %}</h1>

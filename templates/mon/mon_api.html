@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% load tabs %}
+{% block navigation %}
+{% tab "nav" "api" %}
+{{ block.super }}
+{% endblock %}
+
 {% block title %}API{% endblock %}
 {% block header %}API{% endblock %}
 {% block subheader %}overview{% endblock %}

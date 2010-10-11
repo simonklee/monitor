@@ -5,7 +5,7 @@ import logging
 PROJECT_PATH = os.path.split(os.path.realpath(__file__))[0]
 URL = 'http://mon.sedio.org'
 GLOBAL_LOG_LEVEL = logging.INFO
-DEBUG = True
+DEBUG = False
 
 # Admins
 ADMINS = (('Simon Zimmermann', 'simonz05@gmail.com'),)
@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'johnny',
     'south',
+    'tabs',
     'apps.mon',
     'apps.chart',
 )

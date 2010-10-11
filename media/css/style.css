@@ -15,7 +15,7 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-    padding: 0 1em 0 0;
+    padding: 0 0.5em 0 0;
 }
 
 #header h1 a {
@@ -88,6 +88,25 @@ dt {
     font-weight: normal !important;
 }
 
+ul#nav {
+    margin-left: -0.6em;
+}
+
+ul#nav li {
+    display: inline;
+    list-style-type: none;
+    margin: 0 0.3em 0.5em 0;
+}
+
+ul#nav li a.active {
+    font-weight: bold;
+}
+ul#nav li a {
+    background: #E89F51;
+    background: #FFF6D1;
+    padding: 0.2em 0.6em;
+    -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px;    
+}
 /*************************** IMAGES ***/
 
 img {
