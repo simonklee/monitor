@@ -9,7 +9,7 @@ from apps.mon.models import Record
 
 
 def mon_router(request, pattern, *args, **kwargs):
-    "Split up pattern into dates and data."
+    "Split url-pattern to dates and data-fields."
     valid_fields = Record.data_fields()
 
     if not pattern:
