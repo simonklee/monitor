@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>{% block title %}{% endblock %} mon.sedio.org</title>
+    <link type="text/css" href="{{ MEDIA_URL }}css/style.css" rel="Stylesheet" />
+    <link type="text/css" href="{{ MEDIA_URL }}css/grid.css" rel="Stylesheet" />
+    <script type="text/javascript" src="http://www.google.com/jsapi?key={{ GOOGLE_API }}"></script>
+    <script type="text/javascript">
+        google.load("jquery", "1.4.2");
+        /*google.load("jqueryui", "1.8.1");*/
+    </script>
+    {% block extrahead %}{% endblock %}
+</head>
+<body>
+    <div class="container_16">
+        <div class="grid_16" id="header">
+            <div class="grid_8 omega alpha"> 
+                <a href="http://{{ site }}" title="mon.sedio.org" id="logo"></a>
+            </div> 
+            <div class="grid_8 alpha omega" id="loginform">
+            {% if user.is_authenticated %}
+            <p>{{ user.username }} <a href="#" title="Logut">Log out</a></p>
+            {% else %}
+                <form id="login" method="post" action="#">{% csrf_token %}
+                    <ul>
+                        {% if form.errors %}
+                            <li class="error">password/username was wrong</li>
+                        {% endif %}
+                        <li><input id="id_username" type="text" name="username" maxlength="30" /></li>    
+                        <li><input type="password" name="password" id="id_password" /></li> 
+                        <li><input type="submit" value="login" />
+                        <input type="hidden" name="next" value="{{ next }}" /></li>
+                    </ul>
+                </form>
+            {% endif %}
+            </div>
+        </div>
+        <div class="grid_16" id="titles">
+            <h1>{% block header %}{% endblock %}</h1>
+            <h2>{% block subheader %}{% endblock %}</h2>
+        </div>
+        <div class="grid_16" id="content">
+        {% block content %}
+        {% endblock %}
+        </div>
+        <div class="grid_16" id="footer">
+            <p class="contact"><strong>simonz05 A gmail.com</strong></p> 
+        </div>            
+    </div>
+    {% block extrabutt %}{% endblock %}
+</body>
+</html>

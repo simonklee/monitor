@@ -1,0 +1,57 @@
+{% extends "mon/mon_base.html" %}
+
+{% block title %}API{% endblock %}
+{% block header %}API{% endblock %}
+{% block subheader %}overview{% endblock %}
+{% block content %}
+<p>API is available at <code>http://{{ request.META.HTTP_HOST }}{% url mon_router %}{ API }</code>. 
+The data is returned as a JSON-formatted string object.</p>
+<h3>Data format</h3>
+<p>
+    <code><pre>
+[
+    {
+        <em>sensor name</em>: <em>value</em>, 
+        <em>sensor name</em>: <em>value</em>, 
+        <em>created</em>: <em>ISO 8601 date format</em>
+    }
+]
+    </pre></code>
+
+<h3>Data example</h3>
+   <code><pre>
+[
+    {
+        "current": 130.0, 
+        "volt": 12.1, 
+        "created": "2010-10-11T09:42:39"
+    }, 
+    {
+        "current": 130.0, 
+        "volt": 12.1, 
+        "created": "2010-10-10T20:14:32"
+    }
+]
+    </pre></code>
+</p>
+<h3>API-examples</h3>
+<dl>
+    <dt><a href="{% url mon_router %}" title="empty"><code><em>"empty"</em></code></a></dt>
+    <dd>All data available is returned.</dd>
+
+    <dt><a href="{% url mon_router pattern="current/" %}" title="current"><code>/current/</code></a></dt>
+    <dd>Current for all dates.</dd>
+
+    <dt><a href="{% url mon_router pattern="created/volt/current/" %}" title="current"><code>/current/volt/created</code></a></dt>
+    <dd>Current, volt and created for all dates.</dd>
+
+    <dt><a href="{% url mon_router pattern="created/temp/light/2010/10/" %}" title="light and temp"><code>/light/temp/created/2010/10/</code></a></dt>
+    <dd>Light, temp and created from Oct. 2010.</dd>
+
+    <dt><a href="{% url mon_router pattern="temp/2010/10/11/" %}" title="temp"><code>/temp/2010/10/11/</code></a></dt>
+    <dd>Temp from 11 of Oct. 2010.</dd>
+
+    <dt></dt>
+    <dd></dd>
+</dl>
+{% endblock %}

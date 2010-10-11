@@ -3,7 +3,7 @@ import logging
 
 # server specific code
 PROJECT_PATH = os.path.split(os.path.realpath(__file__))[0]
-URL = 'http://monitor.sedio.org'
+URL = 'http://mon.sedio.org'
 GLOBAL_LOG_LEVEL = logging.INFO
 DEBUG = True
 
@@ -55,6 +55,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.csrf",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+    #"apps.mon.context_processors.sites",
+    "apps.mon.context_processors.extra",
 )
 
 # Middleware

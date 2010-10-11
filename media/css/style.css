@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    color: #6D6D6D;
+}
+
+/*************************** HEADERS ***/
+
+h1, h2, h3, h4 {
+    color: #6D6D6D;
+}
+
+h1 {
+    padding: 0 1em 0 0;
+}
+
+h2 {
+    color: #9D9D9D;
+}
+
+h3 {
+    margin: 1em 1em 0.5em 0;
+    border-bottom: solid 5px #f1f1f1;
+}
+
+h4 {
+}
+
+#titles {
+    padding: 0 0 0 1em;
+    background: #f1f1f1;
+    -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px;    
+    overflow: hidden;
+}
+
+#titles h1, #titles h2 {
+    display: inline; 
+}
+
+/*************************** ANCHOR ***/
+
+a {
+    text-decoration: none;
+    color: #fdcc07;
+    -webkit-transition: background-color 1s linear; -moz-transition: background-color 1s linear; -o-transition: background-color 1s linear;
+}
+
+a:hover, a:active {
+    color: #f1f1f1;
+    text-decoration: underline;
+}
+
+
+/*************************** LISTS ***/
+
+ol {
+    margin: 5px 0 15px 0;
+}
+
+ul {
+    list-style: square;
+    margin: 5px 0 15px 0;
+}
+
+ol li, ul li {
+    margin: 0 0 0 2em;
+}
+
+dl.indent dd {
+    padding-left: 10px;
+}
+
+dl.indent dt, dl.indent {
+    margin-top: 3px;
+}
+
+dd {
+    margin: 0 0 1em 1em;
+}
+
+dt {
+    font-weight: normal !important;
+}
+
+/*************************** IMAGES ***/
+
+img {
+    border: 0;
+}
+
+img.left {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+img.center {
+    display: block;
+    clear: both;
+    margin: 15px auto;
+}
+
+img.right {
+    float: right;
+    margin-bottom: 15px;
+    margin-left: 10px;
+}
+
+img.border {
+    border: solid 5px #222;
+}
+
+/*************************** COMMON CLASSES ***/
+
+p {
+    padding: 0 0 1em 0;
+}
+
+p.written {
+    padding: 1em 0 2em 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible{
+    display: block;
+}
+
+.inline{
+    display: inline;
+}
+
+.inline_sibling > * {
+    display: inline;
+}
+
+.textright {
+    text-align: right;
+}
+
+.floatleft {
+    position: relative;
+    display: block;
+    width: 290px;
+    float: left;
+}
+
+.floatright {
+    float: right;
+}
+
+.center {
+    text-align: center;
+}
+
+/*************************** CONTENT ***/
+
+div#header {
+    position: relative;
+    height: 100px;
+}
+
+div#content {
+    background: #f8f8f8;
+    padding: 1em 0 0 1em;
+    -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px;    
+    overflow: hidden;
+    font-size: 1.1em;
+}
+
+div#content a {
+    color: #1F5A91;
+}
+
+#footer {
+    position: relative;
+    margin-bottom: 70px;
+    padding: 30px 4px 4px 4px;
+    text-align: center;
+    color: #333;
+}
+
+/*************************** FORM ***/
+
+form {
+    font-size: 1.1em;
+}
+
+form ul {
+    list-style: none;
+}
+
+form ul li {
+    margin: 0 0 1.5em 0;
+}
+
+option {
+    padding-right: 12px;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    clear: both;
+    display: block;
+}
+
+textarea, input{
+    border: 1px solid #ccc;
+    padding: 2px;
+    width: 250px;
+}
+
+.li_errors > input, .li_errors > textarea, .li_errors > option{
+    background: #FFDDDD;
+}
+
+input.field_errors, textarea.field_errors {
+    background: #FFDDDD;
+}
+
+div#loginform li {
+    display: inline;
+    vertical-align: middle;
+    height: 32px;
+    line-height: 32px;
+}
+
+div#loginform #login {
+    display: block;
+    height: 32px;
+    vertical-align: middle;
+}
+
+div#loginform form, div#loginform p {
+    margin-right: 12px;
+}
+
+#loginform #id_username, #loginform #id_password{
+    width: 100px;
+    border: 1px solid;
+}
+
