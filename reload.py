@@ -10,7 +10,7 @@ def reload():
     with open('pid.txt') as fp:
         pid = fp.read().rstrip()
         print(pid)
-        subprocess.call(['sudo', 'kill' , pid])
+        subprocess.call(['sudo', 'kill', '-SIGHUP', pid])
     fp.close()
 
 reload()
