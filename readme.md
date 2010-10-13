@@ -1,13 +1,13 @@
 # mon.seido.org
 
 Web-interface for displaying sensor data for my photovoltaic wireless-sensor
-project.
+project.[1](http://mon.sedio.org/)
 
 ## Overview
 
-#. Retrieve sensor-data with HTTP GET using the URI hierarchical path. 
-#. Use JavaScript Object Notation(JSON) as the data-interchange format.
-#. Ability to use charts as a graphical representation for data.
+1. Retrieve sensor-data with HTTP GET using the URI hierarchical path. 
+2. Use JavaScript Object Notation(JSON) as the data-interchange format.
+3. Ability to use charts as a graphical representation for data.
 
 ## To do
 
