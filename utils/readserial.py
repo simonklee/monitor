@@ -21,7 +21,7 @@ setup_environ(settings)
 
 from monitor.apps.mon.models import Record
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 EOF = ';'
 LF = '\n'
@@ -36,18 +36,39 @@ class Monitor(object):
         self.baud = kwargs.get('baud', 115200)
         self.timeout = kwargs.get('timeout', 0)
         self.serials = serials
+        self._tty_cache_of = 4
+        self._tty_cache_timeout = None
+        self._tty_cache = None
 
-    def tty_list(self):
-        return [serial.Serial(port, self.baud, timeout=self.timeout) for port in self.tty_names()]
+    def tty_list(self, **kwargs):
+        try:
+            return [serial.Serial(port, self.baud, timeout=self.timeout) for port in self.tty_names()]
+        except IOError:
+            if kwargs.get('rec', True):
+                self._tty_cache_timeout = 0
+                return self.tty_list(rec=False)
+            else:
+                raise
 
     def tty_names(self):
         return self.serials if self.serials else self.tty_scan()
 
     def tty_scan(self):
-        return glob.glob('/dev/ttyUSB*')
+        if self._tty_cache is None or self._cache_timeout():
+            self._tty_cache = glob.glob('/dev/ttyUSB*')
+            self._tty_cache_timeout = self._timestamp() + self._tty_cache_of
+
+        return self._tty_cache
+
+    def _cache_timeout(self):
+        return self._tty_cache_timeout is None or self._tty_cache_timeout < self._timestamp()
+
+    def _timestamp(self):
+        return time.mktime(datetime.datetime.now().timetuple())
 
     def run(self):
-        logging.debug("listening on %s", self.tty_names())
+        tmp_names = self.tty_names()
+        logging.info("Starting ... \nlistening on %s", tmp_names)
 
         while(1):
             res = list()
@@ -68,6 +89,10 @@ class Monitor(object):
                 if t == main:
                     continue
                 logging.debug(t.getName())
+
+            if tmp_names != self.tty_names():
+                tmp_names = self.tty_names()
+                logging.debug("now listening on %s", tmp_names)
             time.sleep(0.1)
 
 
@@ -112,8 +137,5 @@ class Interpreter(threading.Thread):
 
 if __name__=='__main__':
     while(1):
-        try:
-            mon = Monitor()
-            mon.run()
-        except IOError:
-            continue
+        mon = Monitor()
+        mon.run()
