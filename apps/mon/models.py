@@ -21,3 +21,6 @@ class Record(models.Model):
     def data_fields():
         return ['current', 'volt', 'temp', 'light', 'created']
 
+    @staticmethod
+    def data_fields_abbr():
+        return {'i': 'current', 'v': 'volt', 'c': 'temp', 'lux': 'light', 't': 'created'}
