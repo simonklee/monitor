@@ -4,11 +4,12 @@ import re
 import os
 import sys
 import time
-import serial
 import glob
-import threading
+import serial
 import logging
 import datetime
+import optparse
+import threading
 
 proj = os.path.dirname(os.getcwd())
 sys.path.append(proj)
@@ -21,20 +22,18 @@ setup_environ(settings)
 
 from monitor.apps.mon.models import Record
 
-logging.basicConfig(level=logging.DEBUG)
-
 EOF = ';'
 LF = '\n'
 DEL = ','
 
-COMMIT = False
-
 
 class Monitor(object):
 
-    def __init__(self, serials=None, *args, **kwargs):
+    def __init__(self, serials=None, **kwargs):
         self.baud = kwargs.get('baud', 115200)
         self.timeout = kwargs.get('timeout', 0)
+        self.readonly = kwargs.get('readonly', False)
+        self.commit = kwargs.get('commit', False)
         self.serials = serials
         self._tty_cache_of = 4
         self._tty_cache_timeout = None
@@ -79,7 +78,7 @@ class Monitor(object):
                     res.append(s)
                     if res[-1][-1] == EOF:
                         data = ''.join(res)
-                        interp = Interpreter(data[:-1], commit=COMMIT)
+                        interp = Interpreter(data[:-1], commit=self.commit, readonly=self.readonly)
                         interp.start()
                         res = list()
                         # logging.debug(data)
@@ -93,19 +92,25 @@ class Monitor(object):
             if tmp_names != self.tty_names():
                 tmp_names = self.tty_names()
                 logging.debug("now listening on %s", tmp_names)
-            time.sleep(0.1)
+            time.sleep(0.2)
 
 
 class Interpreter(threading.Thread):
 
-    def __init__(self, data, commit=True):
+    def __init__(self, data, commit=False, readonly=False):
         threading.Thread.__init__(self)
+
         self.data = data
         self._data_fields_abbr = Record.data_fields_abbr()
         self.commit = commit
+        self.readonly = readonly
 
     def run(self):
-        r = Record(**self.interpret())
+        if self.readonly:
+            self.read()
+            return
+
+        r = Record(**self._interpret())
         if self.commit:
             r.save()
         else:
@@ -113,7 +118,10 @@ class Interpreter(threading.Thread):
             logging.info("Record(created: %s, current: %s, volt: %s, temp: %s, light: %s)" %
                                 (r.created, r.current, r.volt, r.temp, r.light))
 
-    def interpret(self):
+    def read(self):
+        logging.info("%s" % self.data)
+
+    def _interpret(self):
         values = [d for d in self.data.split(DEL)]
         pairs = dict()
 
@@ -136,6 +144,33 @@ class Interpreter(threading.Thread):
         return pairs
 
 if __name__=='__main__':
+    option_list = (
+        optparse.make_option('-c', '--commit',
+            action = 'store_true',
+            default = False,
+            help = 'commit data to backend-db',
+        ),
+        optparse.make_option('-l', '--loglevel',
+            type = 'choice',
+            choices = ['INFO', 'DEBUG'],
+            default = 'INFO',
+        ),
+        optparse.make_option('-r', '--readonly',
+            action = 'store_true',
+            default = False,
+            help = 'dont interpret the data',
+        ),
+    )
+
+    parser = optparse.OptionParser(option_list=option_list)
+    options, args = parser.parse_args()
+
+    logging.basicConfig(level=logging.__getattribute__(options.loglevel))
+    logging.debug(options)
+
+    logging.info("Commit to database is %s" % options.commit)
+
     while(1):
-        mon = Monitor()
+        mon = Monitor(**options.__dict__)
         mon.run()
+
