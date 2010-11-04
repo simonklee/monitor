@@ -1,4 +1,4 @@
-#! ../ve/bin/env python
+#! ../ve/bin/python
 
 import re
 import os
@@ -30,9 +30,9 @@ DEL = ','
 class Monitor(object):
 
     def __init__(self, serials=None, **kwargs):
-        self.baud = kwargs.get('baud', 115200)
+        self.baud = kwargs.get('baud')
+        self.readonly = kwargs.get('readonly')
         self.timeout = kwargs.get('timeout', 0)
-        self.readonly = kwargs.get('readonly', False)
         self.commit = kwargs.get('commit', False)
         self.serials = serials
         self._tty_cache_of = 4
@@ -76,7 +76,7 @@ class Monitor(object):
                 if n > 0:
                     s = tty.read(n)
                     res.append(s)
-                    if res[-1][-1] == EOF:
+                    if res[-1][-1] == EOF or self.readonly:
                         data = ''.join(res)
                         interp = Interpreter(data[:-1], commit=self.commit, readonly=self.readonly)
                         interp.start()
@@ -159,6 +159,11 @@ if __name__=='__main__':
             action = 'store_true',
             default = False,
             help = 'dont interpret the data',
+        ),
+        optparse.make_option('-b', '--baud',
+            default = 9600,
+            type = int,
+            help = 'set baud-rate',
         ),
     )
 
