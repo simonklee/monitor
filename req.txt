@@ -6,6 +6,7 @@ simplejson
 
 hg+http://bitbucket.org/jmoiron/johnny-cache
 hg+http://bitbucket.org/andrewgodwin/south/#egg=South
+hg+http://bitbucket.org/jespern/django-piston
 
 svn+http://code.djangoproject.com/svn/django/trunk/
 
@@ -13,3 +14,4 @@ git+http://github.com/andymccurdy/redis-py.git
 git+git://github.com/django-extensions/django-extensions.git
 git+http://github.com/robhudson/django-debug-toolbar.git
 git+git://github.com/simonz05/django-tabs.git
+git+git://github.com/simonz05/django-mon.git
