@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^m/', include('apps.mon.urls')),
+    (r'^m/', include('mon.urls')),
     (r'^chart/', include('apps.chart.urls')),
     url(r'^$', direct_to_template, {'template': 'mon/mon_api.html'}, name='api'),
 )
