@@ -12,7 +12,7 @@
 {% block content %}
 <p>API is available at <code>http://{{ request.META.HTTP_HOST }}{% url mon_router %}{ API }</code>. 
 The data is returned as a JSON-formatted string object.</p>
-<h3>Data format</h3>
+<h3>format</h3>
 <p>
     <code><pre>
 [
@@ -24,7 +24,7 @@ The data is returned as a JSON-formatted string object.</p>
 ]
     </pre></code>
 
-<h3>Data example</h3>
+<h3>data</h3>
    <code><pre>
 [
     {
@@ -40,7 +40,7 @@ The data is returned as a JSON-formatted string object.</p>
 ]
     </pre></code>
 </p>
-<h3>API-examples</h3>
+<h3>API</h3>
 <dl>
     <dt><a href="{% url mon_router %}" title="empty"><code><em>"empty"</em></code></a></dt>
     <dd>All data available is returned. There is an exception to this rule; if one of the data fields have a null value, the entry will not be included in the result.</dd>
@@ -60,7 +60,7 @@ The data is returned as a JSON-formatted string object.</p>
     <dt><a href="{% url mon_router pattern="temp/created/2010/10/11/-/2010/10/14/" %}" title="temp"><code>/temp/created/2010/10/11/-/2010/10/14</code></a></dt>
     <dd>Temp and created from the 11 of Oct. 2010. to the 14 of Oct 2010. Date-ranges are quite flexible.</dd>
 </dl>
-<h3>Visualization</h3>
+<h3>charts</h3>
 <p>Data can be visualized using the <a href="{% url chart %}">charts API</a>. Append the same 
 knowledge as used to retrieved JSON formatted strings. Instead of strings a graph is returned.</p>
 
