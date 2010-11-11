@@ -8,6 +8,7 @@ def chart_generator(request, pattern, template_name, *args, **kwargs):
         title = 'filter(%s)' % words
     else:
         title = 'all data'
+        pattern = ''
 
     return render(template_name, {
         'pattern': pattern,
