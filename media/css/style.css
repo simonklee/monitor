@@ -192,7 +192,6 @@ div#content {
     padding: 1em;
     -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px;    
     overflow: hidden;
-    font-size: 1.1em;
 }
 
 div#content a {

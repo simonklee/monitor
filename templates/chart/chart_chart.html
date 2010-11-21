@@ -19,10 +19,14 @@
 The same arguments as available in the regual API can be used. 
 It is available at <code>http://{{ request.META.HTTP_HOST }}{% url chart_generator %}{ API }</code>.
 </p>
-<h3>Charts example</h3>
+<h3>Charts examples</h3>
+<p>Realtime updates for graphs are available by adding the realtime keyword to any kind of query: </p>
+<p><a href="{% url  chart_generator pattern="created/light/2010/11/realtime" %}" title="current"><code>/created/light/2010/11/realtime</code></a></p>
+
+<p><strong>volt vs current</strong></p>
 <p><a href="{% url  chart_generator pattern="created/volt/current/" %}" title="current"><code>/current/volt/created</code></a></p>
-<p>Results:</p>
 <div id="chart2" style="width: 100%; height: 400px"></div>
+
 {% endblock %}
 
 {% block extrabutt %}

@@ -21,13 +21,95 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+        var parseData = function(data) {
+            // create data structure which is easier to fit into chart 
+            var struct = {};
+
+            for (var i = data.length - 1; i >= 0; i--){
+                for (var k in data[i]) {
+                    if (k == 'created')
+                        var v = new Date(data[i][k]);
+                    else
+                        var v = parseFloat(data[i][k]);
+                    if (k in struct) 
+                        struct[k].push(v);
+                    else {
+                        struct[k] = [];
+                        struct[k].push(v);
+                    }
+                }
+            }
+            return struct;
+        }
+
+        var indexOfName = function(arr, name) {
+            for (var i = 0; i < arr.length; i++)
+                if (arr[i].name == name)
+                    return i;
+            return -1;
+        }
+
+        var updateChart = function (series) {
+            $.ajax({
+                url: "{% url mon_router pattern %}",
+                dataType: 'json',
+                success: function(data) {
+                    var struct = parseData(data);
+
+                    var newDate = 'undefined';
+                    var appendPoint = 0;
+                    for (k in struct) {
+                        if (k == 'created') {
+                            newDate = struct[k][struct[k].length-1];
+                            for (kk in series) {
+                                var v = series[kk];
+                                appendPoint = v.data.length;
+                                var last = v.data[appendPoint-1];
+                                if (last.category.toString() == newDate.toString())
+                                    return;
+                            }
+                        }
+                    }
+
+                    if (newDate == 'undefined')
+                        return;
+                    for (k in struct){
+                        if (k == 'created'){
+                            for (var i = 0; i < chart.xAxis.length; i++) {
+                                var cats = chart.xAxis[i].categories;
+                                cats.push(newDate);
+                                chart.xAxis[i].setCategories(cats);
+                            }
+                        } else {
+                            var v = struct[k];
+                            var y = v[v.length-1];
+                            var sindex = indexOfName(series, k);
+
+                            console.log('k: ' + k + ", v: " + y + " indexOf " + indexOfName(series, k));
+                            series[indexOfName(series, k)].addPoint([appendPoint, y], true, true);
+                        }
+                    }
+                }
+            });
+        }
+
         var options = {
             chart: {
                 renderTo: 'chart',
                 backgroundColor: '#f8f8f8',
                 borderColor: '#f1f1f1',
                 borderWidth: 4,
-                defaultSeriesType: 'line'
+                defaultSeriesType: 'line',
+                events: {
+                    load: function() {
+                        {% if realtime %}
+                        var series = this.series;
+                        setInterval(function() {
+                            updateChart(series);
+                        }, 1000);
+                        {% endif %}
+                    }
+                }
             },
             title: {
                 text: "{{ title }}"
@@ -43,49 +125,35 @@
             series: []
         };
 
+        chart;
+        var onSuccess = function(data) {
+            var struct = parseData(data);
+            for (var k in struct) {
+                var v = struct[k];
+                if (k == 'created') {
+                    options.xAxis.type = 'datetime';
+                    options.xAxis.categories = v;
+                } else {
+                    options.series.push({
+                        data: v,
+                        name: k 
+                    });
+                }
+            }
+            if (options.series.length == 1) {
+                options.yAxis.title.text = options.series[0].name;
+            }
+            chart = new Highcharts.Chart(options);
+        }
         $.ajax({
-                url: "{% url mon_router pattern %}",
+            url: "{% url mon_router pattern %}",
             dataType: 'json',
             success: function(data) {
-                // create data structure which is easier to fit into chart 
-                var struct = {};
-
-                for (var i = data.length - 1; i >= 0; i--){
-                    for (var k in data[i]) {
-                        if (k == 'created')
-                            var v = new Date(data[i][k]);
-                        else
-                            var v = parseFloat(data[i][k]);
-                        if (k in struct) 
-                            struct[k].push(v);
-                        else {
-                            struct[k] = [];
-                            struct[k].push(v);
-                        }
-                    }
-                }
-
-                for (var k in struct) {
-                    var v = struct[k];
-                    if (k == 'created') {
-                        options.xAxis.type = 'datetime';
-                        options.xAxis.categories = v;
-                    } else {
-                        options.series.push({
-                            data: v,
-                            name: k 
-                        });
-                    }
-                }
-                
-                if (options.series.length == 1) {
-                    options.yAxis.title.text = options.series[0].name;
-                }
-
-                var chart = new Highcharts.Chart(options);
-            }
+                onSuccess(data);
+            }, 
         });        
 
+        
         Object.size = function(obj) {
             var size = 0, key;
             for (key in obj) {

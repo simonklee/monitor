@@ -13,6 +13,7 @@ def chart_generator(request, pattern, template_name, *args, **kwargs):
     return render(template_name, {
         'pattern': pattern,
         'title': title,
+        'realtime': True if 'realtime' in pattern.lower() else False,
         },
         context_instance=RequestContext(request)
     )
