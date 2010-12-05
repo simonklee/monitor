@@ -120,7 +120,6 @@ class Interpreter(threading.Thread):
                                 (r.created, r.current, r.volt, r.temp, r.light))
 
     def _interpret(self):
-        values = [d for d in self.data.split("[A-Za-z]")]
         pairs = dict()
         values = re.findall(r'([a-zA-Z]+)([0-9.]+)', self.data)
 
