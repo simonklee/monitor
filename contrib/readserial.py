@@ -1,15 +1,15 @@
 #! ../ve/bin/python
 
-import re
-import os
-import sys
-import time
-import glob
-import serial
-import logging
 import datetime
+import glob
+import logging
 import optparse
+import os
+import re
+import serial
+import sys
 import threading
+import time
 
 proj = os.path.dirname(os.getcwd())
 sys.path.append(proj)
@@ -22,7 +22,7 @@ setup_environ(settings)
 
 from mon.models import Record
 
-EOF = ';'
+EOF = '\0'
 LF = '\n'
 DEL = ','
 
@@ -67,7 +67,7 @@ class Monitor(object):
 
     def run(self):
         tmp_names = self.tty_names()
-        logging.info("Starting ... \nlistening on %s", tmp_names)
+        logging.info("Listening on %s", tmp_names)
 
         while(1):
             res = list()
@@ -107,38 +107,33 @@ class Interpreter(threading.Thread):
 
     def run(self):
         if self.readonly:
-            self.read()
+            logging.info("%s" % self.data)
             return
 
         r = Record(**self._interpret())
         if self.commit:
+            #r.light = int(r.light, 16)/10000.0
             r.save()
         else:
             r.created = datetime.datetime.now()
             logging.info("Record(created: %s, current: %s, volt: %s, temp: %s, light: %s)" %
                                 (r.created, r.current, r.volt, r.temp, r.light))
 
-    def read(self):
-        logging.info("%s" % self.data)
-
     def _interpret(self):
-        values = [d for d in self.data.split(DEL)]
+        values = [d for d in self.data.split("[A-Za-z]")]
         pairs = dict()
+        values = re.findall(r'([a-zA-Z]+)([0-9.]+)', self.data)
 
         for v in values:
-            m = re.match(r'[a-zA-Z]+', v)
-            if m is None:
-                continue
-
-            k = v[m.start():m.end()]
+            k = v[0]
             try:
                 k = self._data_fields_abbr[k.lower()]
             except KeyError:
                 logging.debug("%s invalid key" % k)
                 continue
+            pairs[k] = v[1]
 
-            pairs[k] = v[m.end():]
-        logging.debug("%s" % pairs)
+        logging.debug("%s => %s" % (self.data, pairs))
 
         self.data_struct = pairs
         return pairs
