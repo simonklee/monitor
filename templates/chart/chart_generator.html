@@ -21,6 +21,8 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+
+        chart;
         var parseData = function(data) {
             // create data structure which is easier to fit into chart 
             var struct = {};
@@ -49,6 +51,8 @@
             return -1;
         }
 
+        var lastUpdate;
+        var appendPoint;
         var updateChart = function (series) {
             $.ajax({
                 url: "{% url mon_router pattern %}",
@@ -57,17 +61,25 @@
                     var struct = parseData(data);
 
                     var newDate = 'undefined';
-                    var appendPoint = 0;
                     for (k in struct) {
                         if (k == 'created') {
-                            newDate = struct[k][struct[k].length-1];
-                            for (kk in series) {
-                                var v = series[kk];
-                                appendPoint = v.data.length;
-                                var last = v.data[appendPoint-1];
-                                if (last.category.toString() == newDate.toString())
-                                    return;
+                            if (lastUpdate == undefined) {
+                                for (kk in series) {
+                                    var v = series[kk];
+                                    var point = v.data.length;
+                                    var last = v.data[point-1];
+                                    appendPoint = point - 1;
+                                    lastUpdate = last.category;
+                                }
                             }
+                            var now = struct[k][struct[k].length-1];
+                            if (now.toString() == lastUpdate.toString()) {
+                                return;
+                            }
+                            console.log("new updates ");
+                            lastUpdate = now;
+                            newDate = now;
+                            appendPoint++;
                         }
                     }
 
@@ -75,6 +87,7 @@
                         return;
                     for (k in struct){
                         if (k == 'created'){
+                            //console.log("new date added " + newDate);
                             for (var i = 0; i < chart.xAxis.length; i++) {
                                 var cats = chart.xAxis[i].categories;
                                 cats.push(newDate);
@@ -82,10 +95,10 @@
                             }
                         } else {
                             var v = struct[k];
-                            var y = v[v.length-1];
+                            var y = v[v.length - 1];
                             var sindex = indexOfName(series, k);
 
-                            console.log('k: ' + k + ", v: " + y + " indexOf " + indexOfName(series, k));
+                            //console.log('k: ' + k + ", v: " + y + " indexOf " + indexOfName(series, k));
                             series[indexOfName(series, k)].addPoint([appendPoint, y], true, true);
                         }
                     }
@@ -125,7 +138,6 @@
             series: []
         };
 
-        chart;
         var onSuccess = function(data) {
             var struct = parseData(data);
             for (var k in struct) {
